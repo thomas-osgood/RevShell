@@ -76,20 +76,24 @@ func StartShell() (err error) {
 	// create async copy function for STDERR.
 	go func() {
 		io.Copy(shellconn, perr)
-		switch err.Error() {
-		case io.ErrClosedPipe.Error():
-			shellcmd.Process.Kill()
-			return
+		if err != nil {
+			switch err.Error() {
+			case io.ErrClosedPipe.Error():
+				shellcmd.Process.Kill()
+				return
+			}
 		}
 	}()
 
 	// create async copy function for STDIN.
 	go func() {
 		io.Copy(pin, shellconn)
-		switch err.Error() {
-		case io.ErrClosedPipe.Error():
-			shellcmd.Process.Kill()
-			return
+		if err != nil {
+			switch err.Error() {
+			case io.ErrClosedPipe.Error():
+				shellcmd.Process.Kill()
+				return
+			}
 		}
 	}()
 
