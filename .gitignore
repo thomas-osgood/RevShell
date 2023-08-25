@@ -1,1 +1,6 @@
 /revshell
+
+*.json
+*.out
+*.test
+*.txt
